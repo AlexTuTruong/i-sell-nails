@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="container m-5">
+        <h1>I sell Nails</h1>
+        <hr>
+        <h2>Add a nail SKU</h2>
+        <form id ="skuAdder" action="/nail_api" method="post">
+            <div class="form-group flex-row">
+                <label for="nailType">Nail type</label>
+                <input type="text" class="form-control" id="NailTypeInput" placeholder="Nail" required>
+            </div>
+            <div class="form-group">
+                <label for="nailRating">Nail Strength Rating</label>
+                <input type="number" class="form-control" id="nailRatingInput" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+                <label for="nailPrice">Nail Price</label>
+                <input type="number" class="form-control" id="nailPriceInput" placeholder="0" step=".01" min="0">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Nail</button>
+        </form>
+        <hr>
+        <h2>Nail Types</h2>
+        <table class="table" id="nailTable">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Sold</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                <tbody id="nailDisplay">
+                    <!-- Nails dynamically loaded here -->
+                </tbody>
+            </thead>
+        </table>
+        <hr>
+        <div id="soldPrice">
+            <h3>Total Price: 0</h3>
+        </div>
+    </div>
+    <script src="../static/js/index.js"></script>
+{% endblock %}
