@@ -24,10 +24,17 @@ It uses [FastAPI](https://fastapi.tiangolo.com/) to provide endpoints in which a
 ### Installing and running
 
 * Clone this respository
-* Run the command `python3 run.py` within the `app` directory
-    * This should run a web server in which you can access from `http://localhost:8000/` or `http://127.0.0.1:8000/`
-    * A `nails.db` will generate itself in `app/db` if one doesn't exist already
-
+    * HTTPS: `git clone https://github.com/AlexTuTruong/i-sell-nails.git`
+    * SSH: `git clone git@github.com:AlexTuTruong/i-sell-nails.git`
+    * Github CLI: `gh repo clone AlexTuTruong/i-sell-nails`
+* Navigate to the src folder in this repository
+    * `cd /path/to/folder/src`
+* Install the dependencies
+    * `pip install -r requirements.txt`
+* Run the application
+    * `python3 run.py` within the `src` directory
+        * This should run a web server in which you can access from `http://localhost:8000/` or `http://127.0.0.1:8000/`
+        * A `nails.db` will generate itself in `src/db` if one doesn't exist already
 
 ## This project is a work in progress
 
@@ -39,3 +46,8 @@ Some things I'd like to or will implement:
 * Hover over the total sales for a breakdown of what hammers were sold and how many
     * This will require the ledger
 * Add a stock of nails, so infinite nails cannot be sold, this will probably replace rating as Strength rating is not really neccessary
+* Docker file for easy deployment
+
+## Demo Video
+
+<video src="/media/Demo.mp4" width="600" />
