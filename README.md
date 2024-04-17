@@ -26,6 +26,7 @@ It uses [FastAPI](https://fastapi.tiangolo.com/) to provide endpoints in which a
 * Clone this respository
 * Run the command `python3 run.py` within the `app` directory
     * This should run a web server in which you can access from `http://localhost:8000/` or `http://127.0.0.1:8000/`
+    * A `nails.db` will generate itself in `app/db` if one doesn't exist already
 
 
 ## This project is a work in progress
