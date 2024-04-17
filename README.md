@@ -50,4 +50,4 @@ Some things I'd like to or will implement:
 
 ## Demo Video
 
-<video src="/media/Demo.mp4" width="600" />
+https://github.com/AlexTuTruong/i-sell-nails/assets/53573114/f60f0d65-8415-403f-82fa-fd3fd23dd08f
