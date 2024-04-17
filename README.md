@@ -4,7 +4,7 @@ I sell nails is a web application and API which a user can run a nail selling bu
 
 ## Description:
 
-I sell nails is a project I started inspired by [I-Sell-Hammers](https://github.com/tarang5757/I-Sell-Hammers).
+I sell nails is a project I started inspired/suggested by a friend so I can get more full stack experience.
 
 I wanted to have more experience writing full stack applications so I sell nails
 
