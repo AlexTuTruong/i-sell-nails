@@ -1,6 +1,6 @@
 """Defines db schema"""
-from db.database import Base
 from sqlalchemy import Column, Integer, REAL, String
+from db.database import Base
 
 
 

@@ -1,10 +1,9 @@
 """Routes/API endpoints"""
-from . import get_db, models
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 import numpy
-
+from . import get_db, models
 
 router = APIRouter()
 
