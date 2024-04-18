@@ -32,6 +32,7 @@ document.getElementById("skuAdder").addEventListener("submit", function(event) {
     .catch(error => {
         console.error("Error: Cannot add Nail");
     });
+    document.getElementById("skuAdder").reset();
     updatePage();
 });
 
