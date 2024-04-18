@@ -4,10 +4,14 @@ document.getElementById("skuAdder").addEventListener("submit", function(event) {
     
     const formData = {
         type: document.getElementById("NailTypeInput").value,
-        rating: parseInt(document.getElementById("nailRatingInput").value),
+        stock: parseInt(document.getElementById("nailStockInput").value),
         price: parseFloat(document.getElementById("nailPriceInput").value),
         sold: 0
     };
+
+    if (isNaN(formData.stock) || formData.stock < 1){
+        formData.stock = 10
+    }
 
     fetch("/nail_api", {
         method: "POST",
@@ -17,13 +21,16 @@ document.getElementById("skuAdder").addEventListener("submit", function(event) {
         body: JSON.stringify(formData)
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error("Failed to submit form.")
+        if (response.status === 400) {
+            alert("Error: Nail already exists!");
+        }
+        else if (!response.ok) {
+            throw new Error("Failed to submit form.");
         }
         return response.json()
     })
     .catch(error => {
-        console.error("Error: Cannot add Nail")
+        console.error("Error: Cannot add Nail");
     });
     updatePage();
 });
@@ -47,73 +54,65 @@ document.getElementById("nailDisplay").addEventListener("click", function(event)
     }
 });
 
+// Eventlistener for reset ledger button
+document.getElementById("resetLedger").addEventListener("click", function(event) {
+    fetch(`/ledger_api`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to reset ledger!");
+        }
+        return response.json()
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
+});
+
 function sellNail(nailID) {
-    fetch("/nail_api/" + nailID)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.json();
-        })
-        .then(data => {
-
-            data.sold += 1
-
-            fetch("/nail_api/" + nailID, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Failed to submit form.")
-                }
-                return response.json()
-            })
-            .catch(error => {
-                console.error("Error:", error)
-            });
-        })
-        .catch(error => {
-            console.error("Error: Cannot sell Nail");
-        });
+    fetch(`/nail_api/${nailID}/sell`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {
+        if (response.status === 400){
+            alert("Nail out of stock!")
+        }
+        else if (!response.ok) {
+            throw new Error("Failed to sell Nail.");
+        }
+        return response.json()
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
 }
 
 function buybackNail(nailID){
-    fetch("/nail_api/" + nailID)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.sold > 0){
-                data.sold -= 1
-                fetch("/nail_api/" + nailID, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error("Failed to submit form.")
-                        }
-                        return response.json()
-                    })
-                    .catch(error => console.error("Error:", error));
-            }
-            else {
-                throw new error('Cannot buyback below 0 sold!')
-            }
-        })
-        .catch(error => {
-            console.error("Error: Cannot buyback Nail");
-        });
+    fetch(`/nail_api/${nailID}/buyback`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {
+        if (response.status === 400){
+            alert("Canot buy nail if none sold!")
+        }
+        else if (!response.ok) {
+            throw new Error("Failed to buyback Nail.");
+        }
+        return response.json()
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
 }
 
 function deleteNail(nailID) {
@@ -159,8 +158,8 @@ function updateTable() {
                 row.innerHTML = `
                     <td>${nail.id}</td>
                     <td>${nail.type}</td>
-                    <td>${nail.rating}</td>
-                    <td>${nail.price}</td>
+                    <td>${nail.stock}</td>
+                    <td>$${nail.price}</td>
                     <td>${nail.sold}</td>
                     <td scope="col">
                         <button class="btn btn-primary" id="sellNailButton" data-id=${nail.id}>

@@ -11,12 +11,12 @@
                 <input type="text" class="form-control" id="NailTypeInput" placeholder="Nail" required>
             </div>
             <div class="form-group">
-                <label for="nailRating">Nail Strength Rating</label>
-                <input type="number" class="form-control" id="nailRatingInput" placeholder="0" min="0">
+                <label for="nailStock">Initial stock</label>
+                <input type="number" class="form-control" id="nailStockInput" placeholder="10" min="1" max="1000">
             </div>
             <div class="form-group">
                 <label for="nailPrice">Nail Price</label>
-                <input type="number" class="form-control" id="nailPriceInput" placeholder="0" step=".01" min="0">
+                <input type="number" class="form-control" id="nailPriceInput" placeholder="0" step=".01" min="0" max="15" required>
             </div>
             <button type="submit" class="btn btn-primary">Add Nail</button>
         </form>
@@ -27,7 +27,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Type</th>
-                    <th scope="col">Rating</th>
+                    <th scope="col">Stock</th>
                     <th scope="col">Price</th>
                     <th scope="col">Sold</th>
                     <th scope="col">Actions</th>
@@ -39,8 +39,9 @@
         </table>
         <hr>
         <div id="soldPrice">
-            <h3>Total Price: 0</h3>
+            <h3>Total Sales: $0</h3>
         </div>
+        <button class="btn btn-danger" id="resetLedger">Reset Ledger</button>
     </div>
     <script src="../static/js/index.js"></script>
 {% endblock %}
