@@ -44,4 +44,5 @@ Some things I'd like to or will implement:
 
 ## Demo Video
 
-https://github.com/AlexTuTruong/i-sell-nails/assets/53573114/f60f0d65-8415-403f-82fa-fd3fd23dd08f
+https://github.com/AlexTuTruong/i-sell-nails/assets/53573114/2bee352a-492f-4565-8de9-d451adc804da
+
