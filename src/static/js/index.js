@@ -55,6 +55,7 @@ document.getElementById("nailDisplay").addEventListener("click", function(event)
     }
 });
 
+
 // Eventlistener for reset ledger button
 document.getElementById("resetLedger").addEventListener("click", function(event) {
     fetch(`/ledger_api`, {
@@ -72,6 +73,7 @@ document.getElementById("resetLedger").addEventListener("click", function(event)
     .catch(error => {
         console.error("Error:", error);
     });
+    updatePage();
 });
 
 function sellNail(nailID) {
@@ -180,17 +182,73 @@ function updateTable() {
         .catch(error => console.error("Error:", error));
 }
 
-function updatePrice() {
-    fetch("/sold_api")
-        .then(response => response.json())
-        .then(data => {
-            price = parseFloat(data).toFixed(2)
-            const divBody = document.querySelector("#soldPrice h3");
-            divBody.innerHTML = "";
 
-            const priceDisplay = document.createElement("h3")
-            priceDisplay.innerText = "Total Sales: $" + price
-            divBody.appendChild(priceDisplay);
+function updateSales() {
+    fetch("/ledger_api/transactions")
+        .then(response => {
+            if (!response.ok) {
+                const divBody = document.querySelector("#soldPrice h3");
+                divBody.innerHTML = '<h3>Total Sales: $0</h3>';
+                throw new Error("Unable to optain ledger entries!");
+            }
+            return response.json();
+        })
+        .then(data => {
+            let soldTotal = 0;
+            let boughtTotal = 0;
+
+            if (data.detail != "No entries in ledger"){
+                let soldLedger = [];
+                let boughtLedger = [];
+
+                data.forEach((transactionType, transactionIndex) => {
+                    transactionType.forEach(transaction => {
+                        const [transactionNumber, nailType, price] = transaction;
+                        const roundedPrice = Math.round((price + Number.EPSILON) * 100) / 100
+                        const total = transactionNumber * roundedPrice;
+                        const transactionString = `${transactionNumber}X ${nailType} @ $${roundedPrice}`
+                        if (transactionIndex === 0) {
+                            soldLedger.push("SELL " + transactionString);
+                            soldTotal += total;
+                        }
+                        else {
+                            boughtLedger.push("BUY " + transactionString);
+                            boughtTotal += total;
+                        }
+                    })
+                })
+
+
+                const divBody = document.querySelector("#soldPrice h3");
+                divBody.innerHTML = "";
+
+                const priceDisplay = document.createElement("h3");
+                priceDisplay.dataset.bsToggle = "tooltip";
+                priceDisplay.dataset.bsPlacement = "top";
+                priceDisplay.dataset.html = "true";
+
+                let toolTipList = '<h3>Ledger:</h3>'
+
+                soldLedger.forEach(item => {
+                    toolTipList += `${item}<br>`;
+                })
+
+                boughtLedger.forEach(item => {
+                    toolTipList += `${item}<br>`;
+                })
+
+
+
+                priceDisplay.title = toolTipList;
+
+                priceDisplay.innerText = "Total Sales: $" + Math.round(((soldTotal - boughtTotal) + Number.EPSILON) * 100) / 100;
+
+                var toolTip = new bootstrap.Tooltip(priceDisplay)
+
+                divBody.appendChild(priceDisplay);
+            }
+
+
         })
         .catch(error => console.error("Error:", error));
 }
@@ -198,7 +256,7 @@ function updatePrice() {
 function updatePage() {
     setTimeout(() => {
         updateTable();
-        updatePrice();
+        updateSales();
     }, 10);
 }
 

@@ -38,17 +38,6 @@ def get_nail(nail_id: int, db: Session = Depends(get_db)):
     return db.query(models.Nails).filter(models.Nails.id == nail_id).first()
 
 
-@router.get("/sold_api", response_model=float)
-def get_sold_price(db: Session = Depends(get_db)):
-    """Gets the price of all sold nails"""
-
-    amount_sold = numpy.array([nail.sold for nail in db.query(models.Nails).all()])
-    price_of_sold = numpy.array([nail.price for nail in db.query(models.Nails).all()])
-    sold_amounts = numpy.multiply(amount_sold, price_of_sold)
-
-    return sum(sold_amounts)
-
-
 @router.post("/nail_api")
 def create_nail(nail: Nail, db: Session = Depends(get_db)):
     """Makes a new nail SKU/type"""
@@ -179,13 +168,38 @@ def delete_nail(nail_id: int, db: Session = Depends(get_db)):
     db.commit()
 
 
-@router.get("/ledger_api")
-def get_ledger(db: Session = Depends(get_db)):
-    """Returns entire ledger"""
-    return db.query(models.Ledger).all()
+# @router.get("/ledger_api")
+# def get_ledger(db: Session = Depends(get_db)):
+#     """Returns entire ledger"""
+
+#     return db.query(models.Ledger).all()
+
+
+@router.get("/ledger_api/transactions")
+def get_transactions(db: Session = Depends(get_db)):
+    """Returns every type of transaction for """
+
+    transactions = db.query(models.Ledger).all()
+    if not transactions:
+        raise HTTPException(
+            status_code=404,
+            detail="No entries in ledger"
+        )
+
+    sales, buybacks = [], []
+
+    for entry in transactions:
+        if entry.transaction_type == "sell":
+            sales.append([entry.total_transactions, entry.nail_type, entry.price])
+        else:
+            buybacks.append([entry.total_transactions, entry.nail_type, entry.price * .75])
+
+    return sales, buybacks
+
 
 @router.delete("/ledger_api")
 def reset_ledger(db: Session = Depends(get_db)):
     """Deletes all entries in Ledger table"""
+
     db.query(models.Ledger).delete()
     db.commit()
