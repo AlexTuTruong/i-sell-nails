@@ -41,21 +41,21 @@ def get_nail(nail_id: int, db: Session = Depends(get_db)):
 def create_nail(nail: Nail, db: Session = Depends(get_db)):
     """Makes a new nail SKU/type"""
 
-    if db.query(models.Nails).filter(models.Nails.type == nail.type).first():
-        raise HTTPException(
-            status_code=400, detail="Bad request: nail already exists"
-        )
+    existing_nail = db.query(models.Nails).filter(models.Nails.type == nail.type).first()
 
-    nail_model = models.Nails()
-    nail_model.type = nail.type
-    nail_model.stock = nail.stock
-    nail_model.price = nail.price
-    nail_model.sold = nail.sold
+    if existing_nail:
+        update_nail(existing_nail.id, nail, db)
+    else:
+        nail_model = models.Nails()
+        nail_model.type = nail.type
+        nail_model.stock = nail.stock
+        nail_model.price = nail.price
+        nail_model.sold = nail.sold
 
-    db.add(nail_model)
-    db.commit()
+        db.add(nail_model)
+        db.commit()
 
-    return nail
+        return nail
 
 
 @router.put("/nail_api/{nail_id}/sell")
@@ -128,27 +128,26 @@ def buyback_nail(nail_id: int, db: Session = Depends(get_db)):
     db.commit()
 
 
-# @router.put("/nail_api/{nail_id}")
-# def update_nail(nail_id: int, nail: Nail, db: Session = Depends(get_db)):
-#     """Updates the nail values"""
+@router.put("/nail_api/{nail_id}")
+def update_nail(nail_id: int, nail: Nail, db: Session = Depends(get_db)):
+    """Updates the nail values"""
 
-#     nail_model = db.query(models.Nails).filter(models.Nails.id == nail_id).first()
+    nail_model = db.query(models.Nails).filter(models.Nails.id == nail_id).first()
 
-#     if nail_model is None:
-#         raise HTTPException(
-#             status_code=404,
-#             detail=f"ID {nail_id} : Does not exist"
-#         )
+    if nail_model is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"ID {nail_id} : Does not exist"
+        )
 
-#     nail_model.type = nail.type
-#     nail_model.stock = nail.stock
-#     nail_model.price = nail.price
-#     nail_model.sold = nail.sold
+    nail_model.type = nail.type
+    nail_model.stock = nail.stock
+    nail_model.price = nail.price
 
-#     db.add(nail_model)
-#     db.commit()
+    db.add(nail_model)
+    db.commit()
 
-#     return nail
+    return nail
 
 
 @router.delete("/nail_api/{nail_id}")
