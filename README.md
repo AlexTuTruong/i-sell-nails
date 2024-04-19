@@ -2,13 +2,7 @@
 
 I sell nails is a web application and API which a user can run a nail selling business.
 
-## Description:
-
-I sell nails is a project I started inspired/suggested by a friend so I can get more full stack experience.
-
-I wanted to have more experience writing full stack applications so I sell nails
-
-It uses [FastAPI](https://fastapi.tiangolo.com/) to provide endpoints in which a user can manipulate a database to add, sell and buyback nails
+It uses [FastAPI](https://fastapi.tiangolo.com/) to provide endpoints in which a user can manipulate a database to add, sell and buyback nails.
 
 
 ## Getting started
