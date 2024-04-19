@@ -1,6 +1,6 @@
 # I Sell Nails
 
-I sell nails is a web application and API which a user can run a nail selling business.
+I sell nails is a **Project** web application and API which a user can run a nail selling business.
 
 It uses [FastAPI](https://fastapi.tiangolo.com/) to provide endpoints in which a user can manipulate a database to add, sell and buyback nails.
 
@@ -36,7 +36,8 @@ Some things I'd like to or will implement:
 
 * ~~A reset button which will bring the database back to an empty state~~
     * Reset ledger button is now implemented
-* Dummy data to populate the database when created
+* ~~Dummy data to populate the database when created~~
+    * Dummy data is now created on application-run when no data is present
 * ~~A ledger which keeps track of transactions~~
     * Ledger is now implemented
 * ~~Hover over the total sales for a breakdown of what hammers were sold and how many~~
@@ -50,3 +51,6 @@ Some things I'd like to or will implement:
 
 https://github.com/AlexTuTruong/i-sell-nails/assets/53573114/2bee352a-492f-4565-8de9-d451adc804da
 
+## License
+
+This project is licensed under the MIT License - see the LICENSE.md file for details
