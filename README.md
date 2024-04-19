@@ -34,12 +34,16 @@ It uses [FastAPI](https://fastapi.tiangolo.com/) to provide endpoints in which a
 
 Some things I'd like to or will implement:
 
-* A reset button which will bring the database back to an empty state
+* ~~A reset button which will bring the database back to an empty state~~
+    * Reset ledger button is now implemented
 * Dummy data to populate the database when created
-* A ledger which keeps track of transactions
-* Hover over the total sales for a breakdown of what hammers were sold and how many
-    * This will require the ledger
-* Add a stock of nails, so infinite nails cannot be sold, this will probably replace rating as Strength rating is not really neccessary
+* ~~A ledger which keeps track of transactions~~
+    * Ledger is now implemented
+* ~~Hover over the total sales for a breakdown of what hammers were sold and how many~~
+    * ~~This will require the ledger~~
+        * Ledger and Breakdown is now implemented
+* ~~Add a stock of nails, so infinite nails cannot be sold, this will probably replace rating as Strength rating is not really neccessary~~
+    * Rating is now replaced by stock
 * Docker file for easy deployment
 
 ## Demo Video
