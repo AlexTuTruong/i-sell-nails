@@ -1,27 +1,11 @@
 """Routes/API endpoints"""
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
+from db.pydantic_schema import Nail
 from . import get_db, models
 
+
 router = APIRouter()
-
-class Nail(BaseModel):
-    """Nail model/Schema for pydantic validation"""
-
-    type: str = Field(min_length=1)
-    stock: int = Field(gt=-1, lt=1001)
-    price: float = Field(gt=-1)
-    sold: int = Field(gt=-1, lt=15)
-
-class Ledger(BaseModel):
-    """Ledger model/Schema for pydantic validation"""
-
-    nail_type: str = Field(min_length=1)
-    price: float = Field(gt=-1)
-    transaction_type: str = Field()
-    total_transactions: int = Field()
-
 
 @router.get("/nail_api")
 def get_all_nails(db: Session = Depends(get_db)):

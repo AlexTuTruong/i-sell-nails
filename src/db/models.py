@@ -1,8 +1,9 @@
 """Defines db schema"""
 from sqlalchemy import Column, Integer, PrimaryKeyConstraint, REAL, String
-from db.database import Base
+from sqlalchemy.ext.declarative import declarative_base
+# from db.database import Base
 
-
+Base = declarative_base()
 
 class Nails(Base):
     """Nail Schema"""
