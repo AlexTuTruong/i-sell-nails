@@ -241,7 +241,14 @@ function updateSales() {
 
                 priceDisplay.title = toolTipList;
 
-                priceDisplay.innerText = "Total Sales: $" + Math.round(((soldTotal - boughtTotal) + Number.EPSILON) * 100) / 100;
+                roundedPrice = Math.round(((soldTotal - boughtTotal) + Number.EPSILON) * 100) / 100;
+
+
+                if (roundedPrice < 0) {
+                    roundedPrice += " (You've gone negative! Ledger cannot track deleted entries!)";
+                }
+
+                priceDisplay.innerText = "Total Sales: $" + roundedPrice
 
                 var toolTip = new bootstrap.Tooltip(priceDisplay)
 
